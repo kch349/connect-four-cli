@@ -12,18 +12,8 @@ public class Board {
 	public static final int NUM_ROWS = 4;
 	public static final int NUM_PLAYERS = 2;
 	
-	// Current state of the board
-	// A flattened array of the board state for faster lookup.
-	// The board 
-	// 14, 24, 34, 44
-	// 13, 23, 33, 43
-	// 12, 22, 32, 42
-	// 11, 21, 31, 41
-	// where 14 = column 1, row 4.
-	// becomes flattened into
-	// [11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44]
-	// or [column 1, column 2, column 3, column 4]
-	int[] positions;							
+	int[][] positions;						// positions in the board, represented [bottom ... top]
+																// and where the coordinates are [column][row] for easy access
 	List<Integer> actions;				// List of actions made on this board
 	int currentPlayer;						// Player whose turn it currently is (between 1 and num players)
 	
@@ -31,7 +21,7 @@ public class Board {
 	// set number of players, and an empty actions.
 	// Sets Player 1 to be the one with the first turn.
 	public Board() {
-		positions = new int[NUM_COLUMNS * NUM_ROWS];
+		positions = new int[NUM_COLUMNS][NUM_ROWS];
 		System.out.println(Arrays.toString(positions));
 		actions = new ArrayList<Integer>();
 		currentPlayer = 1;
@@ -46,7 +36,7 @@ public class Board {
 	// "ERROR" - The play was invalid, and not completed.
 	// "DRAW" - The play was valid, completed, and filled the last space in the board without
 	// 					any player having one. Therefore the game ended in a draw.
-	public String placeTile(int column) {
+	public boolean placeTile(int column) {
 		String result = findPositionAndPlaceTile(column);
 		if (result.equals("ERROR"));
 		advanceToNextPlayer();
@@ -55,6 +45,16 @@ public class Board {
 		// Otherwise return OK.
 		return getGameStatus();
 }
+	public int getNumColumns() {
+		return 1;
+	}
+	
+	public boolean isWinState() {
+		return false;
+	}
+	public boolean boardFilled() {
+		return false;
+	}
 	
 	// Upon the completion of a turn, advance current player to the next
 	// in the game.
@@ -79,7 +79,7 @@ public class Board {
 		return null;
 	}
 	
-	public List<Integer> getActions() {
+	public List<Integer> getMoves() {
 		return null;
 	}
 	

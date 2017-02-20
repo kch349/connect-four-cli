@@ -145,7 +145,7 @@ public class ConnectFour {
 	// Upon the completion of a turn, advance current player to the next
 	// in the game.
 	public static int advanceToNextPlayer(int currentPlayer) {
-		int nextPlayer = currentPlayer++;
+		int nextPlayer = currentPlayer + 1;
 		// If we have cycled through all the players,
 		// restart at the first.
 		if (nextPlayer > NUM_PLAYERS) {

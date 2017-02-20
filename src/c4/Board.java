@@ -22,7 +22,7 @@ public class Board {
 	
 	/**
 	 *  Creates a new board of the set number of columns and rows
-	 *  with no moves yet.
+	 *  and all 0s. No moves made yet.
 	 */
 	public Board() {
 		positions = new int[NUM_COLUMNS][NUM_ROWS];
@@ -60,7 +60,12 @@ public class Board {
 	 * 				 (if the column is full, or if the column is not within the board).
 	 */
 	public boolean placeTile(int column, int player) {
-		return findPositionAndPlaceTile(column, player);
+		boolean success = findPositionAndPlaceTile(column, player);
+		// If successfully placed a token, add it to the list of moves
+		if (success) {
+			moves.add(column);
+		}
+		return success;
 	}
 	
 	/**
@@ -89,7 +94,18 @@ public class Board {
 	 */
 	@Override
 	public String toString() {
-		return null;
+		// Small number Strings created along the way, so not using string builder
+		String result = "";
+		for (int j = NUM_ROWS - 1; j >= 0; j--) {
+			result += "|";
+			for (int i = 0; i < NUM_COLUMNS; i++) {
+				result += " " + positions[i][j];
+			}
+			result +="\n";
+		}
+		result += "+--------\n";
+		result += "  1 2 3 4";
+		return result;
 	}
 	
 	/**
@@ -99,7 +115,7 @@ public class Board {
 	 * 				 placed, in chronological order.
 	 */
 	public List<Integer> getMoves() {
-		return null;
+		return Collections.unmodifiableList(moves);
 	}
 	
 	// Search for an empty spot at the top of the stack of tiles

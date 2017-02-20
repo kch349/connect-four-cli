@@ -1,8 +1,14 @@
 
 public class ConnectFour {
 
+	public static final String ERROR_MESSAGE = "ERROR";
+	public static final String SUCCESS_MESSAGE = "OK";
+	public static final String WIN_MESSAGE = "WIN";
+	public static final String DRAW_MESSAGE = "DRAW";
+	
 	// Run the Connect Four game.
 	public static void main (String []args) {
+		
 		
 	}
 	
@@ -23,6 +29,8 @@ public class ConnectFour {
 	// check for diagonals
 	// if any, return win.
 	// can easily check if a piece is already there with indices.
+	
+	// Undefined, should players be able to keep playing after someone has won?
 	
 	// unit tests for:
 	// when piece already present

@@ -2,7 +2,7 @@ package c4.test;
 
 import static org.junit.Assert.*;
 import java.util.*;
-import c4.*;
+import c4.Board;
 
 import org.junit.After;
 import org.junit.Before;
@@ -99,7 +99,7 @@ public class BoardTest {
 		String expected = "| 2 0 0 0\n"
 										+ "| 1 0 0 0\n"
 										+ "| 2 0 0 0\n"
-										+ "| 1 2 1 0\n"
+										+ "| 1 0 0 0\n"
 										+ "+--------\n"
 										+ "  1 2 3 4";
 		
@@ -120,23 +120,29 @@ public class BoardTest {
 		String expected = "| 2 2 1 2\n"
 										+ "| 1 1 2 1\n"
 										+ "| 2 2 2 1\n"
-										+ "| 1 1 1 2 \n"
+										+ "| 1 1 1 2\n"
 										+ "+--------\n"
 										+ "  1 2 3 4";
 		
-		// Build board state.
+		// Build board state. Fill column 1
 		testBoard.placeTile(1, 1);
 		testBoard.placeTile(1, 2);
 		testBoard.placeTile(1, 1);
 		testBoard.placeTile(1, 2);
+		
+		// Fill column 2
 		testBoard.placeTile(2, 1);
 		testBoard.placeTile(2, 2);
 		testBoard.placeTile(2, 1);
 		testBoard.placeTile(2, 2);
+		
+		// Fill bottom right corner
 		testBoard.placeTile(3, 1);
 		testBoard.placeTile(4, 2);
 		testBoard.placeTile(4, 1);
 		testBoard.placeTile(3, 2);
+		
+		// Fill top left corner
 		testBoard.placeTile(4, 1);
 		testBoard.placeTile(3, 2);
 		testBoard.placeTile(3, 1);

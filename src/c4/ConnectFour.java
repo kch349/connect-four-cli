@@ -90,6 +90,7 @@ public class ConnectFour {
 				break;
 			case EXIT_GAME_COMMAND:
 				// Exit the game program
+				input.close();
 				System.exit(0);
 			default:
 				// Command invalid; no valid command word included

@@ -1,3 +1,4 @@
+package c4;
 
 public class ConnectFour {
 

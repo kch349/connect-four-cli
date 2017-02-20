@@ -1,3 +1,4 @@
+package c4;
 import java.util.*;
 
 // A board is used in a Connect-Four-Cli game. This board is set

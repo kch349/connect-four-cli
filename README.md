@@ -6,10 +6,12 @@ connect-four-cli provides a simple command line interface for a drop tile game s
 ### Run the Game
 This is a java program that is playable through the command line. To use, please download or clone this repository. Ensure java is installed. This is written with Java 8.
 To compile all code and tests, navigate to the repository home directory, and run:
+
 ```javac src/* -d ./bin -cp "./lib/junit.jar:./lib/hamcrest.jar"
 ```
 
 Next, to begin a game, run:
+
 ```java -cp "./bin" ConnectFour
 ```
 
@@ -18,20 +20,27 @@ Tests are written in JUnit. To run the tests, make sure you have compiled using 
 above for compiling with javac.
 
 Next to run the Board unit test, run:
+
 ```java -cp "./lib/junit.jar:././lib/junit.jar:./lib/hamcrest.jar:./bin" org.junit.runner.JUnitCore BoardTest
 ```
 
 To run the ConnectFour integration tests for the win case, run:
+
 ```java -cp "./bin" ConnectFourTest testFileWin.txt outFileWin.txt
 ```
+
 Then compare output to the expected file (note > for marking input lines will also show up in output).
+
 ```diff expectedFileWin.txt outFileWin.txt
 ```
 
 To run the ConnectFour integration tests for the draw case, run:
+
 ```java -cp "./bin" ConnectFourTest testFileDraw.txt outFileDraw.txt
 ```
+
 Then compare output to the expected file (note > for marking input lines will also show up in output).
+
 ```diff expectedFileDraw.txt outFileDraw.txt
 ```
 

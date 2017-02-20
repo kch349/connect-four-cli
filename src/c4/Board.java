@@ -74,9 +74,9 @@ public class Board {
 	 * @return true if the player has won, false if not
 	 */
 	public boolean isWinState(int player) {
-		boolean wonHorizontally = checkHorizontals(player);
-		boolean wonVertically = checkVerticals(player);
-		boolean wonDiagonally = checkDiagonals(player);
+		boolean wonHorizontally = checkRowsForWin(player);
+		boolean wonVertically = checkColumnsForWin(player);
+		boolean wonDiagonally = checkDiagonalsForWin(player);
 		return wonHorizontally || wonVertically || wonDiagonally;
 	}
 	
@@ -147,21 +147,84 @@ public class Board {
 	// Check all horizontal rows of board for possible wins
 	// for the given player. Returns true if a row filled
 	// with player's tiles is found, false if not.
-	private boolean checkHorizontals(int player) {
+	private boolean checkRowsForWin(int player) {
+		boolean allTokensOfPlayer;
+		int nextTile;
+		for (int j = 0; j < NUM_ROWS; j++) {
+			allTokensOfPlayer = false;
+			for(int i = 0; i < NUM_COLUMNS; i++) {
+				nextTile = positions[i][j];
+				allTokensOfPlayer = (nextTile == player);
+				if (!allTokensOfPlayer) {
+					break;
+				}
+			}
+			// If found a full row of this player's token, player
+			// has won and return true.
+			if (allTokensOfPlayer) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
 	// Check all vertical columns of board for possible wins
 	// for the given player. Returns true if a column filled
 	// with player's tiles is found, false if not.
-	private boolean checkVerticals(int player) {
+	private boolean checkColumnsForWin(int player) {
+		boolean allTokensOfPlayer;
+		int nextTile;
+		for (int i = 0; i < NUM_COLUMNS; i++) {
+			allTokensOfPlayer = false;
+			for(int j = 0; j < NUM_ROWS; j++) {
+				nextTile = positions[i][j];
+				allTokensOfPlayer = (nextTile == player);
+				if (!allTokensOfPlayer) {
+					break;
+				}
+			}
+			// If found a full row of this player's token, player
+			// has won and return true.
+			if (allTokensOfPlayer) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
 	// Check both diagonals of board for possible wins for the
 	// given player. If a full diagonal of player's tiles
 	// is found, returns true, false if not.
-	private boolean checkDiagonals(int player) {
-		return false;
+	private boolean checkDiagonalsForWin(int player) {
+		// Check left to right diagonal
+		boolean allTokensOfPlayer = false;
+		int nextTile;
+		for (int i = 0; i < NUM_COLUMNS; i++) {
+			nextTile = positions[i][NUM_COLUMNS - 1 - i];
+			allTokensOfPlayer = (nextTile == player);
+			if (!allTokensOfPlayer) {
+				break;
+			}
+		}
+		// If found a full diagonal of this player's token from left
+		// to right, player has won and return true.
+		if (allTokensOfPlayer) {
+			return true;
+		}
+		
+		// Check right to left diagonal
+		allTokensOfPlayer = false;
+		for (int i = 0; i < NUM_COLUMNS; i++) {
+			nextTile = positions[i][i];
+			nextTile = positions[i][NUM_COLUMNS - 1 - i];
+			allTokensOfPlayer = (nextTile == player);
+			if (!allTokensOfPlayer) {
+				break;
+			}
+		}
+		// If found a full diagonal of this player's token from
+		// right to left, player has won and return true. Otherwise
+		// player has not won by diagonal and return false.
+		return allTokensOfPlayer;
 	}
 }

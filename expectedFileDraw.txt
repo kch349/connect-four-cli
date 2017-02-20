@@ -1,0 +1,24 @@
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>OK
+>DRAW
+>| 1 2 1 2
+| 1 2 1 2
+| 2 1 2 1
+| 1 2 1 2
++--------
+  1 2 3 4
+>Sorry, the game has already finished. The game was a draw. No more tiles may be placed.
+>

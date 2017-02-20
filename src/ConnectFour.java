@@ -182,7 +182,4 @@ public class ConnectFour {
 			System.out.println(moves.get(i));
 		}
 	}
-	
-	// TODO:
-	// Undefined, should players be able to keep playing after someone has won?
 }

@@ -28,8 +28,10 @@ To run the ConnectFour integration tests for the win case, run:
 ```
 java -cp "./bin" ConnectFourTest testFileWin.txt outFileWin.txt
 ```
+This will create the file outFileWin.txt in the top directory.
 
 Then compare output to the expected file (note > for marking input lines will also show up in output).
+If nothing is reported, the output matches expected.
 ```
 diff expectedFileWin.txt outFileWin.txt
 ```
@@ -38,8 +40,11 @@ To run the ConnectFour integration tests for the draw case, run:
 ```
 java -cp "./bin" ConnectFourTest testFileDraw.txt outFileDraw.txt
 ```
+This will create the file outFileDraw.txt in the top directory.
+
 
 Then compare output to the expected file (note > for marking input lines will also show up in output).
+If nothing is reported, the output matches expected.
 ```
 diff expectedFileDraw.txt outFileDraw.txt
 ```

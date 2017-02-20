@@ -38,25 +38,25 @@ public class BoardTest {
 	// Test that a player can place a tile, and it is reported in the correct place.
 	@Test
 	public void testPlaceTileSuccess() {
-		assertTrue("should be able to successfully place a tile on when space available", testBoard.placeTile(1));
+		assertTrue("should be able to successfully place a tile on when space available", testBoard.placeTile(1, 1));
 	}
 	
 	// Test that player cannot place a tile if a column is full.
 	@Test
 	public void testPlaceTileColumnFullFailure() {
 		// Set up board state to fill column 1.
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		assertFalse("should not be able to place a tile in a full column", testBoard.placeTile(1));
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		assertFalse("should not be able to place a tile in a full column", testBoard.placeTile(1, 1));
 	}
 	
 	// Test that player cannot place a tile if a column is full.
 	@Test
 	public void testPlaceTileNoColumnFailure() {
 		// Set up board state to fill column 1.
-		assertFalse("should not be able to place a tile in a non-existant column", testBoard.placeTile(5));
+		assertFalse("should not be able to place a tile in a non-existant column", testBoard.placeTile(5, 1));
 	}
 	
 	// Test proper records of who played what (depends on the toString method, tested more thoroughly below).
@@ -70,9 +70,9 @@ public class BoardTest {
 										+ "  1 2 3 4";
 		
 		// Build up board state.
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
 		assertEquals("board should show alternating plays, marking different players placing tiles.", expected, testBoard.toString());
 	}
 	
@@ -104,12 +104,12 @@ public class BoardTest {
 										+ "  1 2 3 4";
 		
 		// Build up board state.
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1); // Board will be at state in expected
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2); // Board will be at state in expected
 		assertEquals("board should show column 1 as full.", expected, testBoard.toString());
-		testBoard.placeTile(1); // Provoke error, no more room in the column
+		testBoard.placeTile(1, 1); // Provoke error, no more room in the column
 		assertEquals("board should not change after error", expected, testBoard.toString());
 	}
 	
@@ -125,22 +125,22 @@ public class BoardTest {
 										+ "  1 2 3 4";
 		
 		// Build board state.
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(2);
-		testBoard.placeTile(2);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(3);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
 		assertEquals("should print a full board after corresponding plays", expected, testBoard.toString());
 	}
 
@@ -156,14 +156,14 @@ public class BoardTest {
 								| 1 1 1 1
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		assertTrue("should notice that player 1 has won horizontally", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(4, 1);
+		assertTrue("should notice that player 1 has won horizontally", testBoard.isWinState(1));
 	}
 	
 	@Test
@@ -174,14 +174,14 @@ public class BoardTest {
 								| 1 2 2 2
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		assertTrue("should notice that player 1 has won vertically", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(1, 1);
+		assertTrue("should notice that player 1 has won vertically", testBoard.isWinState(1));
 	}
 	
 	@Test
@@ -192,18 +192,18 @@ public class BoardTest {
 								| 1 1 2 1
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(2);
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		assertTrue("should notice that player 1 has won diagonally left to right", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		assertTrue("should notice that player 1 has won diagonally left to right", testBoard.isWinState(1));
 	}
 	
 	@Test
@@ -214,18 +214,18 @@ public class BoardTest {
 								| 1 2 1 1
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		testBoard.placeTile(3);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(3);
-		testBoard.placeTile(2);
-		testBoard.placeTile(2);
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		assertTrue("should notice that player 1 has won diagonally right to left", testBoard.isWinState());
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(4, 1);
+		assertTrue("should notice that player 1 has won diagonally right to left", testBoard.isWinState(1));
 	}
 	
 	
@@ -241,17 +241,17 @@ public class BoardTest {
 								| 1 1 1 2
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		assertTrue("should notice that player 2 has won horizontally", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(4, 2);
+		assertTrue("should notice that player 2 has won horizontally", testBoard.isWinState(2));
 	}
 	
 	@Test
@@ -262,15 +262,15 @@ public class BoardTest {
 								| 2 1 1 1
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		assertTrue("should notice that player 2 has won vertically", testBoard.isWinState());
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(1, 2);
+		assertTrue("should notice that player 2 has won vertically", testBoard.isWinState(2));
 	}
 	
 	@Test
@@ -281,19 +281,19 @@ public class BoardTest {
 								| 1 2 1 2
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		testBoard.placeTile(2);
-		assertTrue("should notice that player 2 has won diagonally left to right", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(2, 2);
+		assertTrue("should notice that player 2 has won diagonally left to right", testBoard.isWinState(2));
 	}
 	
 	@Test
@@ -304,19 +304,19 @@ public class BoardTest {
 								| 2 1 2 1
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(4);
-		testBoard.placeTile(3);
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);
-		testBoard.placeTile(4);
-		assertTrue("should notice that player 1 has won diagonally right to left", testBoard.isWinState());
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(4, 2);
+		assertTrue("should notice that player 1 has won diagonally right to left", testBoard.isWinState(2));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -331,11 +331,11 @@ public class BoardTest {
 								| 1 2 1 2
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		assertFalse("should not mistake that either player has won horizontally", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		assertFalse("should not mistake that either player has won horizontally", testBoard.isWinState(2));
 	}
 	
 	@Test
@@ -346,11 +346,11 @@ public class BoardTest {
 								| 1 0 0 0
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		assertFalse("should not mistake that either player has won vertically", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		assertFalse("should not mistake that either player has won vertically", testBoard.isWinState(2));
 	}
 	
 	@Test
@@ -361,18 +361,18 @@ public class BoardTest {
 								| 1 2 1 2
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(2);
-		assertFalse("should not mistake that either player has won diagonally left to right", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(2, 1);
+		assertFalse("should not mistake that either player has won diagonally left to right", testBoard.isWinState(1));
 	}
 	
 	@Test
@@ -383,17 +383,17 @@ public class BoardTest {
 								| 1 2 1 2
 								+--------
 								  1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		assertFalse("should not mistake that either player has won diagonally right to left", testBoard.isWinState());
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(4, 2);
+		assertFalse("should not mistake that either player has won diagonally right to left", testBoard.isWinState(2));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -417,22 +417,22 @@ public class BoardTest {
 								| 1 2 1 2
 								+--------
 		  						1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		testBoard.placeTile(3);
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
 		assertTrue("should report the board is full", testBoard.boardFilled());
 	}
 	
@@ -447,22 +447,22 @@ public class BoardTest {
 								| 1 2 1 2
 								+--------
 		  						1 2 3 4 */
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(4);
-		testBoard.placeTile(3);
-		testBoard.placeTile(2);
-		testBoard.placeTile(1);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(4);
-		testBoard.placeTile(1);
-		testBoard.placeTile(2);
-		testBoard.placeTile(3);
-		testBoard.placeTile(1);	// Provokes an error. Tile not placed.
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(4, 1);
+		testBoard.placeTile(3, 2);
+		testBoard.placeTile(2, 1);
+		testBoard.placeTile(1, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(4, 2);
+		testBoard.placeTile(1, 1);
+		testBoard.placeTile(2, 2);
+		testBoard.placeTile(3, 1);
+		testBoard.placeTile(1, 2);	// Provokes an error. Tile not placed.
 		assertFalse("should report the board is full", testBoard.boardFilled());
 	}
 	
@@ -489,37 +489,37 @@ public class BoardTest {
 								+--------
 		  						1 2 3 4 */
 		List<Integer> expected = new ArrayList<Integer>();
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 1);
 		expected.add(1);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 2);
 		expected.add(2);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 1);
 		expected.add(3);
-		testBoard.placeTile(4);
+		testBoard.placeTile(4, 2);
 		expected.add(4);
-		testBoard.placeTile(4);
+		testBoard.placeTile(4, 1);
 		expected.add(4);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 2);
 		expected.add(3);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 1);
 		expected.add(2);
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 2);
 		expected.add(1);
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 1);
 		expected.add(1);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 2);
 		expected.add(2);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 1);
 		expected.add(3);
-		testBoard.placeTile(4);
+		testBoard.placeTile(4, 2);
 		expected.add(4);
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 1);
 		expected.add(1);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 2);
 		expected.add(2);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 1);
 		expected.add(3);
-		testBoard.placeTile(4);
+		testBoard.placeTile(4, 2);
 		expected.add(4);
 		assertTrue("should report the board is full", testBoard.boardFilled());
 		assertEquals("should return the correct list of moves", expected, testBoard.getMoves());
@@ -538,37 +538,37 @@ public class BoardTest {
 								+--------
 		  						1 2 3 4 */
 		List<Integer> expected = new ArrayList<Integer>();
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 1);
 		expected.add(1);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 2);
 		expected.add(2);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 1);
 		expected.add(3);
-		testBoard.placeTile(4);
+		testBoard.placeTile(4, 2);
 		expected.add(4);
-		testBoard.placeTile(4);
+		testBoard.placeTile(4, 1);
 		expected.add(4);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 2);
 		expected.add(3);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 1);
 		expected.add(2);
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 2);
 		expected.add(1);
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 1);
 		expected.add(1);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 2);
 		expected.add(2);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 1);
 		expected.add(3);
-		testBoard.placeTile(4);
+		testBoard.placeTile(4, 2);
 		expected.add(4);
-		testBoard.placeTile(1);
+		testBoard.placeTile(1, 1);
 		expected.add(1);
-		testBoard.placeTile(2);
+		testBoard.placeTile(2, 2);
 		expected.add(2);
-		testBoard.placeTile(3);
+		testBoard.placeTile(3, 1);
 		expected.add(3);
-		testBoard.placeTile(1); // Provokes an error, the column is full.
+		testBoard.placeTile(1, 2); // Provokes an error, the column is full.
 		assertEquals("should return the correct list of moves", expected, testBoard.getMoves());
 		assertEquals("length should equal the size of the board - 1", 15, testBoard.getMoves().size());
 	}

@@ -1,114 +1,151 @@
 package c4;
 import java.util.*;
 
-// A board is used in a Connect-Four-Cli game. This board is set
-// to be a 4x4 board, and be playable by 2 players.
-// It keeps track of the current tiles on the board, the plays
-// made by players to this point, and can tell whether a player has won,
-// if the game is a draw, or if plays are valid or invalid.
+/**
+ *  Board for the Connect-Four-Cli game
+ * @author kch349
+ * 
+ * A Board is used in a Connect-Four-Cli game. This board is set
+ * to be a 4x4 board. It keeps track of the current tiles on the board, the plays
+ * made by players to this point, and can tell whether a player has won,
+ * if the game is a draw, or if plays are valid or invalid.
+ */
 public class Board {
 	
 	public static final int NUM_COLUMNS = 4;
 	public static final int NUM_ROWS = 4;
-	public static final int NUM_PLAYERS = 2;
 	
-	int[][] positions;						// positions in the board, represented [bottom ... top]
-																// and where the coordinates are [column][row] for easy access
-	List<Integer> actions;				// List of actions made on this board
-	int currentPlayer;						// Player whose turn it currently is (between 1 and num players)
+	int[][] positions;			// positions in the board, represented [bottom ... top]
+													// and where the coordinates are [column][row] for easy access
 	
-	// Creates a new board of the set number of columns and rows, with the
-	// set number of players, and an empty actions.
-	// Sets Player 1 to be the one with the first turn.
+	List<Integer> moves;		// list of actions made on this board
+	
+	/**
+	 *  Creates a new board of the set number of columns and rows
+	 *  with no moves yet.
+	 */
 	public Board() {
 		positions = new int[NUM_COLUMNS][NUM_ROWS];
-		System.out.println(Arrays.toString(positions));
-		actions = new ArrayList<Integer>();
-		currentPlayer = 1;
+		moves = new ArrayList<Integer>();
 	}
 	
-	// Place a tile on the board at the specified column, by the
-	// current player.
-	// Returns a string representing the status of the game after this action.
-	// Options include:
-	// "OK" - The play was valid and completed.
-	// "WIN" - The play was valid, completed, and caused the current player to win the game.
-	// "ERROR" - The play was invalid, and not completed.
-	// "DRAW" - The play was valid, completed, and filled the last space in the board without
-	// 					any player having one. Therefore the game ended in a draw.
-	public boolean placeTile(int column) {
-		String result = findPositionAndPlaceTile(column);
-		if (result.equals("ERROR"));
-		advanceToNextPlayer();
-		
-		// Check if this caused a win or draw. If so return that.
-		// Otherwise return OK.
-		return getGameStatus();
-}
+	/**
+	 * Reports the number of columns in this board.
+	 * @return number of columns
+	 */
 	public int getNumColumns() {
-		return 1;
+		return NUM_COLUMNS;
 	}
 	
-	public boolean isWinState() {
-		return false;
-	}
+	/**
+	 * Reports whether this board is completely full of tiles,
+	 * meaning no empty positions remain. (In this state, the
+	 * game is a draw if no player has already won).
+	 * @return true if board full, false otherwise
+	 */
 	public boolean boardFilled() {
-		return false;
+		return moves.size() == (NUM_COLUMNS * NUM_ROWS);
 	}
 	
-	// Upon the completion of a turn, advance current player to the next
-	// in the game.
-	public void advanceToNextPlayer() {
-		currentPlayer++;
-		// If we have cycled through all the players,
-		// restart at the first.
-		if (currentPlayer > NUM_PLAYERS) {
-			currentPlayer = 1;
-		}
+	/**
+	 *  Place a tile for the given player on the board at the
+	 *  given column. Reports whether the tile was successfully placed.
+	 *  on the board at the specified column, by the
+	 *  
+	// current player. Records move if successful.
+	// Returns true if tile successfully placed, false otherwise.
+	 * @param column integer between 1 and the number of columns in this board
+	 * @param player integer representing the current player (player 1, 2, etc).
+	 * @return true if tile placed successfully, false if not 
+	 * 				 (if the column is full, or if the column is not within the board).
+	 */
+	public boolean placeTile(int column, int player) {
+		return findPositionAndPlaceTile(column, player);
 	}
 	
-	// Report game status, as in whether it is in an OK state,
-	// a WIN state, or a DRAW state. Returns the corresponding string.
-	public String getGameStatus() {
-		
-		return null;
+	/**
+	 *  Checks whether the game is currently at a win state for the player.
+	 * @param player integer representing whether this is player 1, 2, etc.
+	 * @return true if the player has won, false if not
+	 */
+	public boolean isWinState(int player) {
+		boolean wonHorizontally = checkHorizontals(player);
+		boolean wonVertically = checkVerticals(player);
+		boolean wonDiagonally = checkDiagonals(player);
+		return wonHorizontally || wonVertically || wonDiagonally;
 	}
+	
+	/**
+	 * Provides a representation of the current board state. This follows the format:
+	 * | 0 0 0 0
+	 * | 0 0 0 0
+	 * | 0 0 0 0
+	 * | 1 2 1 2
+	 * +--------
+	 *   1 2 3 4 
+	 * where columns are marked as column 1, 2, 3 or 4 in the case of a 4 column board,
+	 * and players tiles are represented by their number (here shown for two players).
+	 * @return a String of the specified format representing the current board
+	 */
 	@Override
 	public String toString() {
-		
 		return null;
 	}
 	
+	/**
+	 * Gets a list of all moves made by all players to this point.
+	 * Does not include invalid move attempts.
+	 * @return a list of integers representing columns where a token was
+	 * 				 placed, in chronological order.
+	 */
 	public List<Integer> getMoves() {
 		return null;
 	}
 	
-	
 	// Search for an empty spot at the top of the stack of tiles
 	// in the given column. If there is one, place a tile for the current
-	// player and return the index at which it was placed.
-	// If there was not space in this row, a tile is not placed,
-	// and -1 is returned as an error status.
-	private String findPositionAndPlaceTile(int column) {
+	// player and return true for success.
+	// If there was not space in this column, a tile is not placed,
+	// and returns false.
+	private boolean findPositionAndPlaceTile(int column, int currentPlayer) {
 		// If column is not a column on this board, return -1 as error.
-		if (column > NUM_COLUMNS || column < 0) {
-			return -1;
+		if (column > NUM_COLUMNS || column < 1) {
+			return false;
 		}
 		
+		int columnIndex = column - 1; // for zero based indexing.
 		// Try to find an empty position in the column.
-		int emptyPositionInColumn = -1;
-		int firstIndex = 0 + (NUM_ROWS * (column - 1));				// First position in the given column.
-		for (int i = firstIndex; i < (firstIndex + NUM_ROWS); i++) {
-			if (positions[i] == 0) {
-				emptyPositionInColumn = i;
+		int[] columnData = positions[columnIndex];
+		for (int i = 0; i < columnData.length; i++) {
+			if (columnData[i] == 0) {
+				// Found an empty spot in this column. 
+				// Add tile of the current player here,
+				// and report success
+				positions[columnIndex][i] = currentPlayer;
+				return true;
 			}
 		}
-		return emptyPositionInColumn; 	// still -1 if no empty spot found.
+		return false; 	// column was full and tile not placed
+	}
+
+	// Check all horizontal rows of board for possible wins
+	// for the given player. Returns true if a row filled
+	// with player's tiles is found, false if not.
+	private boolean checkHorizontals(int player) {
+		return false;
 	}
 	
+	// Check all vertical columns of board for possible wins
+	// for the given player. Returns true if a column filled
+	// with player's tiles is found, false if not.
+	private boolean checkVerticals(int player) {
+		return false;
+	}
 	
-	
-	
-	
-
+	// Check both diagonals of board for possible wins for the
+	// given player. If a full diagonal of player's tiles
+	// is found, returns true, false if not.
+	private boolean checkDiagonals(int player) {
+		return false;
+	}
 }

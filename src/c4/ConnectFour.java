@@ -16,11 +16,14 @@ public class ConnectFour {
 	private static Board gameBoard;
 	private static Scanner input;
 	private static int currentPlayer;
+	private static int winner;
 	
 	// Run the Connect Four game.
 	public static void main (String []args) {
-		// Begin a new game. Player 1 goes first. Begin listening for user input
+		// Begin a new game. Player 1 goes first. No one has won yet.
+		// Begin listening for user input
 		currentPlayer = 1;
+		winner = -1;
 		gameBoard = new Board();
 		input = new Scanner(System.in);
 		
@@ -47,7 +50,21 @@ public class ConnectFour {
 				}
 				int column = parseTargetColumn(tokens[1], gameBoard.getNumColumns());
 				
-				// If input included a valid column, try to place a tile for the current player.
+				// If input included a valid column, command as a whole is valid.
+				// First check to see if the game is already over, with a player winning
+				// or a draw. If so, report this to the user and do not try to place a tile.
+				if (winner > 0 || gameBoard.boardFilled()) {
+					System.out.print("Sorry, the game has already finished.");
+					if (winner > 0) {
+						System.out.print(" Player " + winner + " has won.");
+					} else {
+						System.out.print(" The game was a draw.");
+					}
+					System.out.println(" No more tiles may be placed.");
+					break;
+				}
+
+				// If the game is still on, try to place a tile for the current player.
 				if (column != -1) {
 					boolean success = gameBoard.placeTile(column, currentPlayer);
 					if (!success) {
@@ -56,6 +73,7 @@ public class ConnectFour {
 						// Successfully placed a tile. Check current game state
 						// and report it to the user.
 						if (gameBoard.isWinState(currentPlayer)) {
+							winner = currentPlayer;
 							System.out.println(WIN_MESSAGE);
 						} else if (gameBoard.boardFilled()) {
 							System.out.println(DRAW_MESSAGE);

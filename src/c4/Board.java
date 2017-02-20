@@ -5,13 +5,15 @@ import java.util.*;
  *  Board for the Connect-Four-Cli game
  * @author kch349
  * 
- * A Board is used in a Connect-Four-Cli game. This board is set
- * to be a 4x4 board. It keeps track of the current tiles on the board, the plays
+ * A Board is a 4x4 board used in a Connect-Four-Cli game.
+ * It keeps track of the current tiles on the board, the plays
  * made by players to this point, and can tell whether a player has won,
  * if the game is a draw, or if plays are valid or invalid.
  */
 public class Board {
 	
+	// Board dimensions: square 4x4 board. Changing these would also change the game
+	// from Connect Four to Connect <NUM_COLUMNS> in this implementation.
 	public static final int NUM_COLUMNS = 4;
 	public static final int NUM_ROWS = 4;
 	
@@ -200,7 +202,7 @@ public class Board {
 		boolean allTokensOfPlayer = false;
 		int nextTile;
 		for (int i = 0; i < NUM_COLUMNS; i++) {
-			nextTile = positions[i][NUM_COLUMNS - 1 - i];
+			nextTile = positions[i][NUM_ROWS - 1 - i];
 			allTokensOfPlayer = (nextTile == player);
 			if (!allTokensOfPlayer) {
 				break;
@@ -216,7 +218,6 @@ public class Board {
 		allTokensOfPlayer = false;
 		for (int i = 0; i < NUM_COLUMNS; i++) {
 			nextTile = positions[i][i];
-			nextTile = positions[i][NUM_COLUMNS - 1 - i];
 			allTokensOfPlayer = (nextTile == player);
 			if (!allTokensOfPlayer) {
 				break;

@@ -1,8 +1,8 @@
-package c4.test;
+
+
 
 import static org.junit.Assert.*;
 import java.util.*;
-import c4.Board;
 
 import org.junit.After;
 import org.junit.Before;
